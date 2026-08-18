@@ -1,36 +1,102 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Geo Relations Lab
 
-## Getting Started
+Aplicação web desenvolvida como projeto de estudo e portfólio para explorar **interfaces geoespaciais e visualização de relacionamentos** utilizando React e TypeScript.
 
-First, run the development server:
+O projeto combina um mapa interativo com cadastro de locais, zonas geográficas e relações entre pontos, permitindo representar os mesmos dados tanto espacialmente no mapa quanto como um grafo.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Funcionalidades
+
+O escopo do projeto inclui:
+
+* visualização de mapa interativo;
+* cadastro de locais a partir de coordenadas selecionadas no mapa;
+* exibição de marcadores e detalhes dos locais;
+* criação de linhas e relações entre pontos;
+* criação de zonas através de polígonos;
+* identificação de pontos localizados dentro de uma zona;
+* representação das relações entre locais através de grafos;
+* persistência simulada através de uma API REST mockada.
+
+O desenvolvimento é feito de forma incremental, adicionando as funcionalidades conforme os conceitos e integrações são estudados.
+
+## Tecnologias
+
+| Tecnologia               | Utilização                                   |
+| ------------------------ | -------------------------------------------- |
+| **Next.js**              | Estrutura da aplicação e App Router          |
+| **React**                | Componentização e gerenciamento de estado    |
+| **TypeScript**           | Tipagem e modelagem dos dados                |
+| **MapLibre GL JS**       | Mapa, marcadores e elementos geoespaciais    |
+| **React Flow**           | Visualização de locais e relações como grafo |
+| **shadcn/ui + Radix UI** | Componentes de interface                     |
+| **Tailwind CSS**         | Estilização                                  |
+| **JSON Server**          | Simulação de API REST                        |
+
+## Conceitos explorados
+
+Além das bibliotecas, o projeto é utilizado para praticar conceitos como:
+
+* `useState`, `useRef` e `useEffect`;
+* integração entre React e bibliotecas externas;
+* formulários controlados;
+* modelagem de dados com TypeScript;
+* separação entre estado da aplicação e representação visual;
+* manipulação de coordenadas e geometrias;
+* relacionamentos entre entidades;
+* consumo de APIs REST;
+* componentização e separação de responsabilidades.
+
+### Estado React e MapLibre
+
+Uma das decisões do projeto é manter os dados da aplicação independentes dos objetos visuais do mapa.
+
+```text
+Estado React
+    ↓
+Locais / Zonas / Relações
+    ↓
+Representação visual
+    ├── MapLibre
+    └── React Flow
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Dessa forma, mapas e grafos funcionam como diferentes representações dos mesmos dados.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Estrutura
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```text
+src/
+├── app/
+├── components/
+│   └── ui/
+└── features/
+    └── mapa/
+        ├── components/
+        └── types.ts
+```
 
-## Learn More
+A organização evolui conforme novas responsabilidades aparecem, evitando abstrações desnecessárias no início do desenvolvimento.
 
-To learn more about Next.js, take a look at the following resources:
+## Executando o projeto
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+git clone <url-do-repositorio>
+cd geo-relations-lab
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+npm install
+npm run dev
+```
 
-## Deploy on Vercel
+A aplicação estará disponível no endereço informado pelo Next.js no terminal.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Status
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+🚧 **Em desenvolvimento**
+
+O projeto é utilizado como laboratório prático para aprofundar conhecimentos em desenvolvimento frontend, TypeScript, visualização geoespacial e representação de dados relacionados.
+
+## Autor
+
+**Wendel Rodrigues**
+
+Estudante de Engenharia de Software e desenvolvedor interessado em desenvolvimento Full Stack, APIs, arquitetura de software e aplicações web.

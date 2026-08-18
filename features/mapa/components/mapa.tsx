@@ -3,7 +3,10 @@
 import { useEffect, useRef, useState } from "react";
 import {
   Map,
-  Marker, NavigationControl, setWorkerUrl
+  Marker,
+  NavigationControl,
+  Popup,
+  setWorkerUrl,
 } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { FormularioLocal } from "./formulario-local";
@@ -11,18 +14,18 @@ import type { Local, Coordenada } from "../types";
 
 setWorkerUrl("/maplibre/maplibre-gl-worker.mjs");
 
-
-const COORDENADA_INICIAL: Coordenada = {longitude : -39.013, latitude: -4.969} // logintude e latitude
+const COORDENADA_INICIAL: Coordenada = { longitude: -39.013, latitude: -4.969 }; // logintude e latitude
 
 export default function Mapa() {
-  const mapaContainerRef = useRef<HTMLDivElement | null>(null);  // o MapLibre precisa receber um elemento HTML como container para renderizar o mapa. 
-    // O useRef é usado para criar uma referência a esse elemento, para que o MapLibre acesse diretamente o DOM.
+  const mapaContainerRef = useRef<HTMLDivElement | null>(null); // o MapLibre precisa receber um elemento HTML como container para renderizar o mapa.
+  // O useRef é usado para criar uma referência a esse elemento, para que o MapLibre acesse diretamente o DOM.
   const mapaRef = useRef<Map | null>(null);
   const marcadoresRef = useRef<Marker[]>([]);
 
   const [locais, setLocais] = useState<Local[]>([]);
   const [formularioAberto, setFormularioAberto] = useState(false);
-  const [coordenadaPendente, setCoordenadaPendente] = useState<Coordenada | null>(null);
+  const [coordenadaPendente, setCoordenadaPendente] =
+    useState<Coordenada | null>(null);
 
   useEffect(() => {
     if (!mapaContainerRef.current) {
@@ -73,10 +76,32 @@ export default function Mapa() {
       marcador.remove();
     });
 
+    const popup = new Popup({
+      closeButton: false,
+      closeOnClick: false,
+      offset: 30,
+    });
+
     const novosMarcadores = locais.map((local) => {
-      return new Marker()
+      const marcador = new Marker()
         .setLngLat([local.longitude, local.latitude])
         .addTo(mapa);
+
+      const elementoHtml = marcador.getElement();
+      elementoHtml.addEventListener("mouseenter", () => {
+        // console.log(`Mouse passou por: ${local.nome}`);
+        popup
+          .setLngLat([local.longitude, local.latitude])
+          .setHTML(local.nome)
+          .addTo(mapa);
+      });
+
+      elementoHtml.addEventListener("mouseleave", () => {
+        // console.log(`Mouse saiu de: ${local.nome}`);
+        popup.remove();
+      });
+
+      return marcador;
     });
 
     marcadoresRef.current = novosMarcadores;
@@ -116,10 +141,7 @@ export default function Mapa() {
 
   return (
     <>
-      <div
-        ref={mapaContainerRef}
-        className="h-screen w-full"
-      />
+      <div ref={mapaContainerRef} className="h-screen w-full" />
 
       <FormularioLocal
         aberto={formularioAberto}

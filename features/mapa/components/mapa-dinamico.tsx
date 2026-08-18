@@ -13,5 +13,7 @@ const Mapa = dynamic(() => import("./mapa"), {
 });
 
 export function MapaDinamico() {
-  return <Mapa />;
+  return (
+    <Mapa />
+  );
 }

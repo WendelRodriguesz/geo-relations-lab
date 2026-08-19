@@ -11,6 +11,7 @@ import {
 import "maplibre-gl/dist/maplibre-gl.css";
 import { FormularioLocal } from "./formulario-local";
 import type { Local, Coordenada } from "../types";
+import { InformacoesLocal } from "./informacoes-local";
 
 setWorkerUrl("/maplibre/maplibre-gl-worker.mjs");
 
@@ -26,6 +27,8 @@ export default function Mapa() {
   const [formularioAberto, setFormularioAberto] = useState(false);
   const [coordenadaPendente, setCoordenadaPendente] =
     useState<Coordenada | null>(null);
+  const [informacoesAberto, setInformacoesAberto] = useState(false);
+  const [localSelecionado, setLocalSelecionado] = useState<Local | null>(null);
 
   useEffect(() => {
     if (!mapaContainerRef.current) {
@@ -48,7 +51,6 @@ export default function Mapa() {
         longitude: event.lngLat.lng,
         latitude: event.lngLat.lat,
       });
-
       setFormularioAberto(true);
     });
 
@@ -92,13 +94,20 @@ export default function Mapa() {
         // console.log(`Mouse passou por: ${local.nome}`);
         popup
           .setLngLat([local.longitude, local.latitude])
-          .setHTML(local.nome)
+          .setText(local.nome)
           .addTo(mapa);
       });
 
       elementoHtml.addEventListener("mouseleave", () => {
         // console.log(`Mouse saiu de: ${local.nome}`);
         popup.remove();
+      });
+
+      elementoHtml.addEventListener("click", (event) => {
+        event.stopPropagation(); // Isso para não ser disparado o evento de click do mapa, que abriria o formulário de cadastro.
+        popup.remove();
+        setLocalSelecionado(local);
+        setInformacoesAberto(true);
       });
 
       return marcador;
@@ -131,11 +140,19 @@ export default function Mapa() {
     setCoordenadaPendente(null);
   }
 
-  function handleOpenChange(aberto: boolean) {
+  function handleFormularioOpenChange(aberto: boolean) {
     setFormularioAberto(aberto);
 
     if (!aberto) {
       setCoordenadaPendente(null);
+    }
+  }
+
+  function handleInformacoesOpenChange(aberto: boolean) {
+    setInformacoesAberto(aberto);
+
+    if (!aberto) {
+      setLocalSelecionado(null);
     }
   }
 
@@ -146,8 +163,14 @@ export default function Mapa() {
       <FormularioLocal
         aberto={formularioAberto}
         coordenada={coordenadaPendente}
-        onOpenChange={handleOpenChange}
+        onOpenChange={handleFormularioOpenChange}
         onCadastrar={handleCadastrarLocal}
+      />
+
+      <InformacoesLocal
+        aberto={informacoesAberto}
+        dadosLocal={localSelecionado}
+        onOpenChange={handleInformacoesOpenChange}
       />
     </>
   );

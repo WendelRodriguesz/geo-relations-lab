@@ -37,7 +37,7 @@ export default function Mapa() {
 
     const mapa = new Map({
       container: mapaContainerRef.current,
-      style: "https://demotiles.maplibre.org/style.json",
+      style: "https://tiles.openfreemap.org/styles/liberty",
       center: [COORDENADA_INICIAL.longitude, COORDENADA_INICIAL.latitude],
       zoom: 5,
     });

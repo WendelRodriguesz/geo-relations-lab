@@ -149,6 +149,14 @@ export default function Mapa() {
     });
 
     marcadoresRef.current = novosMarcadores;
+
+    return () => {
+      popup.remove();
+
+      novosMarcadores.forEach((marcador) => {
+        marcador.remove();
+      });
+    };
   }, [locais, localOrigemSelecionado]);
 
   function handleCadastrarLocal(dados: {

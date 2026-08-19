@@ -7,6 +7,13 @@ export type Local = {
   latitude: number;
 };
 
+export type Relacao = {
+  id: string;
+  origemId: string;
+  destinoId: string;
+  tipo: string;
+};
+
 export type Coordenada = {
   longitude: number;
   latitude: number;

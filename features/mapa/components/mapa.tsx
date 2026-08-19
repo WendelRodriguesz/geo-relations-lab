@@ -10,7 +10,7 @@ import {
 } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { FormularioLocal } from "./formulario-local";
-import type { Local, Coordenada } from "../types";
+import type { Local, Coordenada, Relacao } from "../types";
 import { InformacoesLocal } from "./informacoes-local";
 
 setWorkerUrl("/maplibre/maplibre-gl-worker.mjs");
@@ -27,8 +27,16 @@ export default function Mapa() {
   const [formularioAberto, setFormularioAberto] = useState(false);
   const [coordenadaPendente, setCoordenadaPendente] =
     useState<Coordenada | null>(null);
+
   const [informacoesAberto, setInformacoesAberto] = useState(false);
   const [localSelecionado, setLocalSelecionado] = useState<Local | null>(null);
+
+  const [relacoes, setRelacoes] = useState<Relacao[]>([]);
+  const [localOrigemSelecionado, setLocalOrigemSelecionado] =
+    useState<Local | null>(null);
+  useEffect(() => {
+    console.log("Relações atualizadas:", relacoes);
+  }, [relacoes]);
 
   useEffect(() => {
     if (!mapaContainerRef.current) {
@@ -39,7 +47,7 @@ export default function Mapa() {
       container: mapaContainerRef.current,
       style: "https://tiles.openfreemap.org/styles/liberty",
       center: [COORDENADA_INICIAL.longitude, COORDENADA_INICIAL.latitude],
-      zoom: 5,
+      zoom: 15,
     });
 
     mapa.addControl(new NavigationControl());
@@ -103,18 +111,45 @@ export default function Mapa() {
         popup.remove();
       });
 
+      // elementoHtml.addEventListener("click", (event) => {
+      //   event.stopPropagation(); // Isso para não ser disparado o evento de click do mapa, que abriria o formulário de cadastro.
+      //   popup.remove();
+      //   setLocalSelecionado(local);
+      //   setInformacoesAberto(true);
+      // });
+
       elementoHtml.addEventListener("click", (event) => {
-        event.stopPropagation(); // Isso para não ser disparado o evento de click do mapa, que abriria o formulário de cadastro.
+        event.stopPropagation();
         popup.remove();
-        setLocalSelecionado(local);
-        setInformacoesAberto(true);
+
+        if (localOrigemSelecionado === null) {
+          setLocalOrigemSelecionado(local);
+          console.log(`Local de origem selecionado: ${local.nome}`);
+          return;
+        }
+
+        if (localOrigemSelecionado.id === local.id) {
+          setLocalOrigemSelecionado(null);
+          console.log(`Seleção de origem cancelada: ${local.nome}`);
+          return;
+        }
+
+        console.log(`Local de destino selecionado: ${local.nome}`);
+        const novaRelacao: Relacao = {
+          id: crypto.randomUUID(),
+          origemId: localOrigemSelecionado.id,
+          destinoId: local.id,
+          tipo: "relacao",
+        };
+        setRelacoes((relacoesAtuais) => [...relacoesAtuais, novaRelacao]);
+        setLocalOrigemSelecionado(null);
       });
 
       return marcador;
     });
 
     marcadoresRef.current = novosMarcadores;
-  }, [locais]);
+  }, [locais, localOrigemSelecionado]);
 
   function handleCadastrarLocal(dados: {
     nome: string;

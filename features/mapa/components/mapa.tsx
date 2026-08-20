@@ -39,9 +39,10 @@ export default function Mapa() {
     console.log("Relações atualizadas:", relacoes);
   }, [relacoes]);
 
+  // Criar o mapa
   useEffect(() => {
     if (!mapaContainerRef.current) {
-      return; // componente entrou no DOM -> cria MapLibre Map -> componente desmonta -> mapa.remove()
+      return;
     }
 
     const mapa = new Map({
@@ -55,23 +56,7 @@ export default function Mapa() {
 
     mapaRef.current = mapa;
 
-    const inscricaoClique = mapa.on("click", (event) => {
-      if (popupAcoesRef.current?.isOpen()) {
-        popupAcoesRef.current.remove();
-        popupAcoesRef.current = null;
-        return;
-      }
-
-      setCoordenadaPendente({
-        longitude: event.lngLat.lng,
-        latitude: event.lngLat.lat,
-      });
-      setFormularioAberto(true);
-    });
-
     return () => {
-      inscricaoClique.unsubscribe();
-
       marcadoresRef.current.forEach((marcador) => {
         marcador.remove();
       });
@@ -81,6 +66,42 @@ export default function Mapa() {
       mapa.remove();
     };
   }, []);
+
+  // Cria o efeito para o clique
+  useEffect(() => {
+    const mapa = mapaRef.current;
+
+    if (!mapa) {
+      return;
+    }
+
+    const inscricaoClique = mapa.on("click", (event) => {
+      if (popupAcoesRef.current?.isOpen()) {
+        popupAcoesRef.current.remove();
+        popupAcoesRef.current = null;
+        return;
+      }
+
+      if (localOrigemSelecionado !== null) {
+        setLocalOrigemSelecionado(null);
+
+        console.log("Relação cancelada, sem marcador associado no mapa.");
+
+        return;
+      }
+
+      setCoordenadaPendente({
+        longitude: event.lngLat.lng,
+        latitude: event.lngLat.lat,
+      });
+
+      setFormularioAberto(true);
+    });
+
+    return () => {
+      inscricaoClique.unsubscribe();
+    };
+  }, [localOrigemSelecionado]);
 
   useEffect(() => {
     const mapa = mapaRef.current;

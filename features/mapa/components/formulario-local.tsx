@@ -50,7 +50,7 @@ export function FormularioLocal({
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    if (!nome.trim() || !tipo.trim()) {
+    if (!nome.trim()) {
       return;
     }
 
@@ -106,7 +106,6 @@ export function FormularioLocal({
               value={tipo}
               onChange={(event) => setTipo(event.target.value)}
               placeholder="Ex.: depósito"
-              required
             />
           </div>
 

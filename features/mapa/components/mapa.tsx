@@ -12,6 +12,8 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import { FormularioLocal } from "./formulario-local";
 import type { Local, Coordenada, Relacao } from "../types";
 import { InformacoesLocal } from "./informacoes-local";
+import type { Feature, FeatureCollection, LineString } from "geojson";
+import type { GeoJSONSource } from "maplibre-gl";
 
 setWorkerUrl("/maplibre/maplibre-gl-worker.mjs");
 
@@ -35,9 +37,6 @@ export default function Mapa() {
   const [relacoes, setRelacoes] = useState<Relacao[]>([]);
   const [localOrigemSelecionado, setLocalOrigemSelecionado] =
     useState<Local | null>(null);
-  useEffect(() => {
-    console.log("Relações atualizadas:", relacoes);
-  }, [relacoes]);
 
   // Criar o mapa
   useEffect(() => {
@@ -53,6 +52,26 @@ export default function Mapa() {
     });
 
     mapa.addControl(new NavigationControl());
+
+    mapa.on("load", () => {
+      mapa.addSource("relacoes-source", {
+        type: "geojson",
+        data: {
+          type: "FeatureCollection",
+          features: [],
+        },
+      });
+
+      mapa.addLayer({
+        id: "relacoes-layer",
+        type: "line",
+        source: "relacoes-source",
+        paint: {
+          "line-color": "#2563eb",
+          "line-width": 3,
+        },
+      });
+    });
 
     mapaRef.current = mapa;
 
@@ -85,7 +104,7 @@ export default function Mapa() {
       if (localOrigemSelecionado !== null) {
         setLocalOrigemSelecionado(null);
 
-        console.log("Relação cancelada, sem marcador associado no mapa.");
+        // console.log("Relação cancelada, sem marcador associado no mapa.");
 
         return;
       }
@@ -146,7 +165,7 @@ export default function Mapa() {
         if (localOrigemSelecionado !== null) {
           if (localOrigemSelecionado.id === local.id) {
             setLocalOrigemSelecionado(null);
-            console.log(`Seleção de origem cancelada: ${local.nome}`);
+            // console.log(`Seleção de origem cancelada: ${local.nome}`);
             return;
           }
 
@@ -200,7 +219,7 @@ export default function Mapa() {
 
           popupAcoesRef.current?.remove();
 
-          console.log(`Local de origem selecionado: ${local.nome}`);
+          // console.log(`Local de origem selecionado: ${local.nome}`);
         });
 
         const popupAcoes = new Popup({
@@ -232,6 +251,54 @@ export default function Mapa() {
       });
     };
   }, [locais, localOrigemSelecionado]);
+
+  useEffect(() => {
+    const mapa = mapaRef.current;
+
+    if (!mapa) {
+      return;
+    }
+
+    const source = mapa.getSource<GeoJSONSource>("relacoes-source");
+
+    if (!source) {
+      return;
+    }
+
+    const features: Feature<LineString>[] = relacoes.flatMap((relacao) => {
+      const origem = locais.find((local) => local.id === relacao.origemId);
+
+      const destino = locais.find((local) => local.id === relacao.destinoId);
+
+      if (!origem || !destino) {
+        return [];
+      }
+
+      return [
+        {
+          type: "Feature",
+          properties: {
+            relacaoId: relacao.id,
+            tipo: relacao.tipo,
+          },
+          geometry: {
+            type: "LineString",
+            coordinates: [
+              [origem.longitude, origem.latitude],
+              [destino.longitude, destino.latitude],
+            ],
+          },
+        },
+      ];
+    });
+
+    const geojson: FeatureCollection<LineString> = {
+      type: "FeatureCollection",
+      features,
+    };
+
+    source.setData(geojson);
+  }, [locais, relacoes]);
 
   function handleCadastrarLocal(dados: {
     nome: string;

@@ -16,6 +16,7 @@ import { FormularioLocal } from "./formulario-local";
 import { FormularioRelacao } from "./formulario-relacao";
 import { InformacoesLocal } from "./informacoes-local";
 import { InformacoesRelacao } from "./informacoes-relacao";
+import { Grafo } from "./grafo";
 import type {
   Coordenada,
   DadosLocal,
@@ -72,6 +73,8 @@ export default function Mapa() {
 
   const [informacoesRelacaoAberto, setInformacoesRelacaoAberto] =
     useState(false);
+
+  const [grafoAberto, setGrafoAberto] = useState(false);
 
   // Criar o mapa
   useEffect(() => {
@@ -520,6 +523,14 @@ export default function Mapa() {
     <>
       <div ref={mapaContainerRef} className="h-screen w-full" />
 
+      <button
+        type="button"
+        onClick={() => setGrafoAberto(true)}
+        className="fixed left-4 top-4 z-10 rounded-md bg-background px-4 py-2 text-sm font-medium shadow-md"
+      >
+        Ver grafo
+      </button>
+
       <FormularioLocal
         aberto={formularioAberto}
         coordenada={coordenadaPendente}
@@ -548,6 +559,14 @@ export default function Mapa() {
         destino={destinoRelacaoSelecionada}
         onOpenChange={handleInformacoesRelacaoOpenChange}
       />
+
+      {grafoAberto && (
+        <Grafo
+          locais={locais}
+          relacoes={relacoes}
+          onFechar={() => setGrafoAberto(false)}
+        />
+      )}
     </>
   );
 }

@@ -13,7 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-import type { DadosRelacao, Local } from "../types";
+import type { DadosRelacao, Local } from "../../types";
 
 type FormularioRelacaoProps = {
   aberto: boolean;

@@ -7,7 +7,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import type { Local } from "../types";
+import type { Local } from "../../types";
 
 type InformacoesLocalProps = {
   aberto: boolean;

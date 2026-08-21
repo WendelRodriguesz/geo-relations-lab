@@ -12,10 +12,10 @@ import {
 import "maplibre-gl/dist/maplibre-gl.css";
 import type { Feature, FeatureCollection, LineString } from "geojson";
 
-import { FormularioLocal } from "./formulario-local";
-import { FormularioRelacao } from "./formulario-relacao";
-import { InformacoesLocal } from "./informacoes-local";
-import { InformacoesRelacao } from "./informacoes-relacao";
+import { FormularioLocal } from "./forms/formulario-local";
+import { FormularioRelacao } from "./forms/formulario-relacao";
+import { InformacoesLocal } from "./infos/informacoes-local";
+import { InformacoesRelacao } from "./infos/informacoes-relacao";
 import { Grafo } from "./grafo";
 import type {
   Coordenada,

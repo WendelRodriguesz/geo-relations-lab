@@ -190,7 +190,10 @@ export default function Mapa() {
     });
 
     const novosMarcadores = locais.map((local) => {
-      const marcador = new Marker()
+      const marcador = new Marker({
+        color: localOrigemSelecionado?.id === local.id ? "#cb2a3a" : "#2443c2",
+      })
+
         .setLngLat([local.longitude, local.latitude])
         .addTo(mapa);
 
@@ -530,6 +533,13 @@ export default function Mapa() {
       >
         Ver grafo
       </button>
+
+      {localOrigemSelecionado && (
+        <div className="fixed left-1/2 top-4 z-20 -translate-x-1/2 rounded-md bg-[#42f57e8a] px-4 py-2 text-sm shadow-md">
+          Origem: <strong>{localOrigemSelecionado.nome}</strong>. Selecione
+          outro marcador para criar a relação.
+        </div>
+      )}
 
       <FormularioLocal
         aberto={formularioAberto}

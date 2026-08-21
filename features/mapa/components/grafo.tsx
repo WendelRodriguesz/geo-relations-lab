@@ -22,20 +22,31 @@ type GrafoProps = {
 };
 
 export function Grafo({ locais, relacoes, onFechar }: GrafoProps) {
-  const nodes = useMemo<Node[]>(
-    () =>
-      locais.map((local, index) => ({
-        id: local.id,
-        position: {
-          x: (index % 3) * 250,
-          y: Math.floor(index / 3) * 150,
-        },
-        data: {
-          label: local.nome,
-        },
-      })),
-    [locais],
-  );
+  const ESCALA_GRAFO = 20000;
+
+  const nodes = useMemo<Node[]>(() => {
+    if (locais.length === 0) {
+      return [];
+    }
+
+    const longitudeMinima = Math.min(...locais.map((local) => local.longitude));
+
+    const latitudeMaxima = Math.max(...locais.map((local) => local.latitude));
+
+    return locais.map((local) => ({
+      id: local.id,
+
+      position: {
+        x: (local.longitude - longitudeMinima) * ESCALA_GRAFO,
+
+        y: (latitudeMaxima - local.latitude) * ESCALA_GRAFO,
+      },
+
+      data: {
+        label: local.nome,
+      },
+    }));
+  }, [locais]);
 
   const edges = useMemo<Edge[]>(
     () =>

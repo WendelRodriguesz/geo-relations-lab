@@ -8,7 +8,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
-import type { Local, Relacao } from "../../utils/types";
+import type { Local, Relacao } from "../../types";
 
 type InformacoesRelacaoProps = {
   aberto: boolean;

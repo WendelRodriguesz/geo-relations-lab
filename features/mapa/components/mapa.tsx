@@ -28,7 +28,7 @@ import type {
   Local,
   Relacao,
   Zona,
-} from "../utils/types";
+} from "../types";
 
 setWorkerUrl("/maplibre/maplibre-gl-worker.mjs");
 

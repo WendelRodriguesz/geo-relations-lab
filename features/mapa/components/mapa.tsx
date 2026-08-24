@@ -298,10 +298,6 @@ export default function Mapa() {
 
         popup.remove();
 
-        if (modoMapa === "zona") {
-          return;
-        }
-
         if (localOrigemSelecionado !== null) {
           if (localOrigemSelecionado.id === local.id) {
             setLocalOrigemSelecionado(null);
@@ -485,10 +481,6 @@ export default function Mapa() {
     });
 
     const inscricaoClique = mapa.on("click", LAYER_RELACOES_ID, (event) => {
-      if (modoMapa !== "normal") {
-        return;
-      }
-
       const feature = event.features?.[0];
 
       const relacaoId = feature?.properties?.relacaoId;
@@ -521,7 +513,7 @@ export default function Mapa() {
       inscricaoMouseLeave.unsubscribe();
       inscricaoClique.unsubscribe();
     };
-  }, [relacoes, mapaCarregado, modoMapa]);
+  }, [relacoes, mapaCarregado]);
 
   // Sincronizar zonas com GeoJSON
   useEffect(() => {
@@ -557,6 +549,14 @@ export default function Mapa() {
 
     const inscricaoClique = mapa.on("click", LAYER_ZONAS_ID, (event) => {
       if (modoMapa !== "zona" || criandoZona) {
+        return;
+      }
+
+      const relacoesClicadas = mapa.queryRenderedFeatures(event.point, {
+        layers: [LAYER_RELACOES_ID],
+      });
+
+      if (relacoesClicadas.length > 0) {
         return;
       }
 

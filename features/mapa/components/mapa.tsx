@@ -23,7 +23,7 @@ import type {
   DadosRelacao,
   Local,
   Relacao,
-} from "../types";
+} from "../utils/types";
 
 setWorkerUrl("/maplibre/maplibre-gl-worker.mjs");
 

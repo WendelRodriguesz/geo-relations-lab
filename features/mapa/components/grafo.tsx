@@ -13,7 +13,7 @@ import {
 
 import { Button } from "@/components/ui/button";
 
-import type { Local, Relacao } from "../types";
+import type { Local, Relacao } from "../utils/types";
 
 type GrafoProps = {
   locais: Local[];

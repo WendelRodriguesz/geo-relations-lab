@@ -36,3 +36,15 @@ export type Relacao = {
   origemId: string;
   destinoId: string;
 };
+
+export type DadosZona = {
+  nome: string;
+  cor: string;
+};
+
+export type Zona = {
+  id: string;
+  nome: string;
+  cor: string;
+  coordenadas: Coordenada[];
+};

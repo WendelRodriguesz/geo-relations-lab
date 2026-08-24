@@ -20,6 +20,14 @@ import { Grafo } from "./grafo";
 import { FormularioZona } from "./forms/formulario-zona";
 import { InformacoesZona } from "./infos/informacoes-zona";
 import { criarFeatureZona, locaisDentroDaZona } from "../utils/zonas";
+import {
+  criarLocal,
+  criarRelacao,
+  criarZona,
+  listarLocais,
+  listarRelacoes,
+  listarZonas,
+} from "../api";
 import type {
   Coordenada,
   DadosLocal,
@@ -100,6 +108,23 @@ export default function Mapa() {
   const [zonaSelecionada, setZonaSelecionada] = useState<Zona | null>(null);
 
   const [informacoesZonaAberto, setInformacoesZonaAberto] = useState(false);
+
+  // Carregar dados
+  useEffect(() => {
+    async function carregarDados() {
+      const [locaisSalvos, relacoesSalvas, zonasSalvas] = await Promise.all([
+        listarLocais(),
+        listarRelacoes(),
+        listarZonas(),
+      ]);
+
+      setLocais(locaisSalvos);
+      setRelacoes(relacoesSalvas);
+      setZonas(zonasSalvas);
+    }
+
+    void carregarDados();
+  }, []);
 
   // Criar o mapa
   useEffect(() => {
@@ -596,7 +621,7 @@ export default function Mapa() {
     };
   }, [coordenadasZona, criandoZona, mapaCarregado]);
 
-  function handleCadastrarLocal(dados: DadosLocal) {
+  async function handleCadastrarLocal(dados: DadosLocal) {
     if (!coordenadaPendente) {
       return;
     }
@@ -610,7 +635,9 @@ export default function Mapa() {
       latitude: coordenadaPendente.latitude,
     };
 
-    setLocais((locaisAtuais) => [...locaisAtuais, novoLocal]);
+    const localSalvo = await criarLocal(novoLocal);
+
+    setLocais((locaisAtuais) => [...locaisAtuais, localSalvo]);
 
     setFormularioAberto(false);
     setCoordenadaPendente(null);
@@ -632,7 +659,7 @@ export default function Mapa() {
     }
   }
 
-  function handleCadastrarRelacao(dados: DadosRelacao) {
+  async function handleCadastrarRelacao(dados: DadosRelacao) {
     if (!relacaoPendente) {
       return;
     }
@@ -647,7 +674,9 @@ export default function Mapa() {
       destinoId: relacaoPendente.destinoId,
     };
 
-    setRelacoes((relacoesAtuais) => [...relacoesAtuais, novaRelacao]);
+    const relacaoSalva = await criarRelacao(novaRelacao);
+
+    setRelacoes((relacoesAtuais) => [...relacoesAtuais, relacaoSalva]);
 
     setFormularioRelacaoAberto(false);
     setRelacaoPendente(null);
@@ -687,7 +716,7 @@ export default function Mapa() {
     setFormularioZonaAberto(true);
   }
 
-  function handleCadastrarZona(dados: DadosZona) {
+  async function handleCadastrarZona(dados: DadosZona) {
     if (coordenadasZona.length < 3) {
       return;
     }
@@ -699,7 +728,9 @@ export default function Mapa() {
       coordenadas: coordenadasZona,
     };
 
-    setZonas((zonasAtuais) => [...zonasAtuais, novaZona]);
+    const zonaSalva = await criarZona(novaZona);
+
+    setZonas((zonasAtuais) => [...zonasAtuais, zonaSalva]);
 
     setCriandoZona(false);
     setCoordenadasZona([]);

@@ -1,0 +1,209 @@
+{
+  "locais": [
+    {
+      "id": "local-ufc",
+      "nome": "UFC Campus Quixadá",
+      "descricao": "Campus da Universidade Federal do Ceará em Quixadá.",
+      "tipo": "universidade",
+      "longitude": -39.056274,
+      "latitude": -4.979501
+    },
+    {
+      "id": "local-cedro",
+      "nome": "Açude Cedro",
+      "descricao": "Reservatório histórico localizado na região do Cedro.",
+      "tipo": "ponto turístico",
+      "longitude": -39.06404,
+      "latitude": -4.97791
+    },
+    {
+      "id": "local-galinha",
+      "nome": "Pedra da Galinha Choca",
+      "descricao": "Formação rochosa e um dos principais pontos turísticos de Quixadá.",
+      "tipo": "ponto turístico",
+      "longitude": -39.071181,
+      "latitude": -4.986031
+    },
+    {
+      "id": "local-rodoviaria",
+      "nome": "Terminal Rodoviário de Quixadá",
+      "descricao": "Terminal rodoviário do município.",
+      "tipo": "transporte",
+      "longitude": -39.01644,
+      "latitude": -4.97294
+    },
+    {
+      "id": "local-unicatolica",
+      "nome": "Unicatólica",
+      "descricao": "Centro Universitário Católica de Quixadá.",
+      "tipo": "universidade",
+      "longitude": -39.015584,
+      "latitude": -4.975156
+    },
+    {
+      "id": "local-sitia",
+      "nome": "Sitiá Oeste",
+      "descricao": "Área urbana de Quixadá próxima ao centro.",
+      "tipo": "bairro",
+      "longitude": -39.01862,
+      "latitude": -4.97435
+    },
+    {
+      "id": "local-putiu",
+      "nome": "Putiú",
+      "descricao": "Área urbana de Quixadá utilizada como ponto externo para teste das zonas.",
+      "tipo": "bairro",
+      "longitude": -39.01829,
+      "latitude": -4.98101
+    },
+    {
+      "id": "YEltKraYX9Y",
+      "nome": "Hospital de Quixadá",
+      "descricao": "",
+      "tipo": "Saúde",
+      "longitude": -39.02211802262943,
+      "latitude": -4.967508518862402
+    },
+    {
+      "id": "iPNcVcSh71c",
+      "nome": "Praça do Leão",
+      "descricao": "",
+      "tipo": "Social",
+      "longitude": -39.01588390412235,
+      "latitude": -4.970218961012634
+    }
+  ],
+  "relacoes": [
+    {
+      "id": "relacao-1",
+      "nome": "Próximo ao",
+      "descricao": "O Campus da UFC fica na região do Açude Cedro.",
+      "tipo": "proximidade",
+      "cor": "#2563eb",
+      "origemId": "local-ufc",
+      "destinoId": "local-cedro"
+    },
+    {
+      "id": "relacao-2",
+      "nome": "Ponto turístico associado",
+      "descricao": "A Pedra da Galinha Choca fica próxima ao Açude Cedro.",
+      "tipo": "turismo",
+      "cor": "#16a34a",
+      "origemId": "local-cedro",
+      "destinoId": "local-galinha"
+    },
+    {
+      "id": "relacao-3",
+      "nome": "Acesso para",
+      "descricao": "Relação de deslocamento entre a rodoviária e a Unicatólica.",
+      "tipo": "transporte",
+      "cor": "#ea580c",
+      "origemId": "local-rodoviaria",
+      "destinoId": "local-unicatolica"
+    },
+    {
+      "id": "relacao-4",
+      "nome": "Conexão acadêmica",
+      "descricao": "Relação de teste entre duas instituições de ensino de Quixadá.",
+      "tipo": "educação",
+      "cor": "#9333ea",
+      "origemId": "local-unicatolica",
+      "destinoId": "local-ufc"
+    },
+    {
+      "id": "relacao-5",
+      "nome": "Próximo de",
+      "descricao": "Relação de proximidade para testar o grafo na região central.",
+      "tipo": "proximidade",
+      "cor": "#0891b2",
+      "origemId": "local-sitia",
+      "destinoId": "local-rodoviaria"
+    },
+    {
+      "id": "4XR5OzndDTk",
+      "nome": "Passeio",
+      "descricao": "",
+      "tipo": "Indo ali na",
+      "cor": "#e7d50d",
+      "origemId": "local-rodoviaria",
+      "destinoId": "iPNcVcSh71c"
+    },
+    {
+      "id": "UQDoOz5ugYI",
+      "nome": "Teste2",
+      "descricao": "",
+      "tipo": "",
+      "cor": "#2563eb",
+      "origemId": "iPNcVcSh71c",
+      "destinoId": "YEltKraYX9Y"
+    }
+  ],
+  "zonas": [
+    {
+      "id": "zona-cedro",
+      "nome": "Zona do Cedro",
+      "cor": "#22c55e",
+      "coordenadas": [
+        {
+          "longitude": -39.075,
+          "latitude": -4.973
+        },
+        {
+          "longitude": -39.052,
+          "latitude": -4.973
+        },
+        {
+          "longitude": -39.052,
+          "latitude": -4.991
+        },
+        {
+          "longitude": -39.075,
+          "latitude": -4.991
+        }
+      ]
+    },
+    {
+      "id": "zona-centro",
+      "nome": "Zona Central",
+      "cor": "#f59e0b",
+      "coordenadas": [
+        {
+          "longitude": -39.022,
+          "latitude": -4.969
+        },
+        {
+          "longitude": -39.012,
+          "latitude": -4.969
+        },
+        {
+          "longitude": -39.012,
+          "latitude": -4.978
+        },
+        {
+          "longitude": -39.022,
+          "latitude": -4.978
+        }
+      ]
+    },
+    {
+      "id": "5nY6mIYeRMg",
+      "nome": "Triangulo",
+      "cor": "#22c55e",
+      "coordenadas": [
+        {
+          "longitude": -39.02333546744043,
+          "latitude": -4.965780700994912
+        },
+        {
+          "longitude": -39.015911112887466,
+          "latitude": -4.966315129085572
+        },
+        {
+          "longitude": -39.02118970022886,
+          "latitude": -4.968345951882711
+        }
+      ]
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}

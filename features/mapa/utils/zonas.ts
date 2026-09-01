@@ -2,7 +2,7 @@ import booleanPointInPolygon from "@turf/boolean-point-in-polygon";
 
 import type { Feature, Polygon, Position } from "geojson";
 
-import type { Local, Zona } from "./types";
+import type { Local, Zona } from "../types";
 
 export function criarFeatureZona(zona: Zona): Feature<Polygon> {
   const anel: Position[] = zona.coordenadas.map((coordenada) => [

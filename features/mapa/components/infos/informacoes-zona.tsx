@@ -7,7 +7,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
-import type { Local, Zona } from "../../utils/types";
+import type { Local, Zona } from "../../types";
 
 type InformacoesZonaProps = {
   aberto: boolean;

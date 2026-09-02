@@ -1,12 +1,10 @@
 package io.github.wendelrodriguesz.geo_relations_lab_backend.helloworld.service;
 
 import io.github.wendelrodriguesz.geo_relations_lab_backend.helloworld.entity.User;
-import lombok.Getter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class HelloeWorldService {
+public class HelloWorldService {
     private int nextId = 0;
     private User users[] = new User[5];
 

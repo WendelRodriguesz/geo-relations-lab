@@ -1,7 +1,7 @@
 package io.github.wendelrodriguesz.geo_relations_lab_backend.helloworld.controller;
 
 import io.github.wendelrodriguesz.geo_relations_lab_backend.helloworld.entity.User;
-import io.github.wendelrodriguesz.geo_relations_lab_backend.helloworld.service.HelloeWorldService;
+import io.github.wendelrodriguesz.geo_relations_lab_backend.helloworld.service.HelloWorldService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/hello-world")
 public class HelloWorldController {
     @Autowired
-    private HelloeWorldService helloWorldService;
+    private HelloWorldService helloWorldService;
 
     @GetMapping
     public User[] helloWorldGet() {

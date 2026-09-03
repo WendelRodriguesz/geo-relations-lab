@@ -1,4 +1,4 @@
-package io.github.wendelrodriguesz.geo_relations_lab_backend;
+package io.github.wendelrodriguesz.georelationslab;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -35,4 +35,5 @@ build/
 .env
 
 Task.md
+types.ts
 src/main/java/io/github/wendelrodriguesz/georelationslab/helloworld

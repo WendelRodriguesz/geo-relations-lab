@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/locals")
+@RequestMapping("/locais")
 @RequiredArgsConstructor // O Lombok cria o construtor automaticamente
 public class LocalController {
     private final LocalService localService;
@@ -33,7 +33,7 @@ public class LocalController {
         return localService.verLocalPorId(id);
     }
 
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     public LocalResponse atualizarLocal(@PathVariable UUID id, @RequestBody LocalUpdateRequest request){
         return localService.atualizar(id, request);
     }

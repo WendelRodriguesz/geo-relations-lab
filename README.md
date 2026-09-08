@@ -1,102 +1,226 @@
 # Geo Relations Lab
 
-Aplicação web desenvolvida como projeto de estudo e portfólio para explorar **interfaces geoespaciais e visualização de relacionamentos** utilizando React e TypeScript.
+Aplicação **Full Stack** para criação e visualização de relações entre pontos geográficos.
 
-O projeto combina um mapa interativo com cadastro de locais, zonas geográficas e relações entre pontos, permitindo representar os mesmos dados tanto espacialmente no mapa quanto como um grafo.
+O sistema permite cadastrar locais diretamente em um mapa, criar relações entre eles, definir zonas geográficas e visualizar os mesmos dados tanto espacialmente, com **MapLibre**, quanto como um grafo utilizando **React Flow**.
+
+O projeto possui frontend em **Next.js + React + TypeScript** e backend REST em **Java + Spring Boot**, com persistência em **PostgreSQL**.
 
 ## Funcionalidades
 
-O escopo do projeto inclui:
-
-* visualização de mapa interativo;
-* cadastro de locais a partir de coordenadas selecionadas no mapa;
-* exibição de marcadores e detalhes dos locais;
-* criação de linhas e relações entre pontos;
+* cadastro de locais a partir de pontos selecionados no mapa;
+* visualização de locais através de marcadores;
+* criação de relações entre locais;
+* representação das relações como linhas geográficas;
 * criação de zonas através de polígonos;
-* identificação de pontos localizados dentro de uma zona;
-* representação das relações entre locais através de grafos;
-* persistência simulada através de uma API REST mockada.
-
-O desenvolvimento é feito de forma incremental, adicionando as funcionalidades conforme os conceitos e integrações são estudados.
+* identificação de locais dentro de uma zona;
+* visualização de locais e relações como grafo;
+* CRUD REST de Locais, Relações e Zonas;
+* persistência dos dados em PostgreSQL;
+* validações e regras de negócio no backend;
+* tratamento padronizado de erros HTTP;
+* documentação da API com OpenAPI/Swagger.
 
 ## Tecnologias
 
-| Tecnologia               | Utilização                                   |
-| ------------------------ | -------------------------------------------- |
-| **Next.js**              | Estrutura da aplicação e App Router          |
-| **React**                | Componentização e gerenciamento de estado    |
-| **TypeScript**           | Tipagem e modelagem dos dados                |
-| **MapLibre GL JS**       | Mapa, marcadores e elementos geoespaciais    |
-| **React Flow**           | Visualização de locais e relações como grafo |
-| **shadcn/ui + Radix UI** | Componentes de interface                     |
-| **Tailwind CSS**         | Estilização                                  |
-| **JSON Server**          | Simulação de API REST                        |
+### Frontend
 
-## Conceitos explorados
+* Next.js
+* React
+* TypeScript
+* MapLibre GL JS
+* React Flow
+* Tailwind CSS
+* shadcn/ui
+* Radix UI
 
-Além das bibliotecas, o projeto é utilizado para praticar conceitos como:
+### Backend
 
-* `useState`, `useRef` e `useEffect`;
-* integração entre React e bibliotecas externas;
-* formulários controlados;
-* modelagem de dados com TypeScript;
-* separação entre estado da aplicação e representação visual;
-* manipulação de coordenadas e geometrias;
-* relacionamentos entre entidades;
-* consumo de APIs REST;
-* componentização e separação de responsabilidades.
+* Java
+* Spring Boot
+* Spring Web / MVC
+* Spring Data JPA
+* Hibernate
+* Jakarta Validation
+* Lombok
+* OpenAPI / Swagger
+* PostgreSQL
 
-### Estado React e MapLibre
-
-Uma das decisões do projeto é manter os dados da aplicação independentes dos objetos visuais do mapa.
+## Arquitetura
 
 ```text
+┌─────────────────────────────┐
+│          Frontend           │
+│ Next.js + React + TypeScript│
+│ MapLibre + React Flow       │
+└─────────────┬───────────────┘
+              │ REST
+              ▼
+┌─────────────────────────────┐
+│          Backend            │
+│        Spring Boot          │
+│                             │
+│ Controller                  │
+│     ↓                       │
+│ Service                     │
+│     ↓                       │
+│ Repository                  │
+└─────────────┬───────────────┘
+              │ JPA / Hibernate
+              ▼
+┌─────────────────────────────┐
+│         PostgreSQL          │
+└─────────────────────────────┘
+```
+
+O domínio permanece independente das bibliotecas de visualização.
+
+```text
+PostgreSQL
+    ↓
+REST API
+    ↓
 Estado React
     ↓
-Locais / Zonas / Relações
+Local / Relação / Zona
     ↓
-Representação visual
-    ├── MapLibre
-    └── React Flow
+┌─────────────┬─────────────┐
+│             │             │
+MapLibre   React Flow       UI
 ```
 
-Dessa forma, mapas e grafos funcionam como diferentes representações dos mesmos dados.
+Dessa forma, objetos específicos de MapLibre ou React Flow não são armazenados como dados de domínio.
 
-## Estrutura
+## Modelagem
+
+### Local
+
+Representa um ponto geográfico com nome, descrição, tipo, longitude e latitude.
+
+### Relação
+
+Conecta dois locais através de suas IDs.
+
+As coordenadas não são duplicadas na relação: a linha exibida no mapa é derivada das coordenadas dos locais de origem e destino.
+
+### Zona
+
+Representa um polígono formado por uma lista ordenada de coordenadas.
+
+A ordem dos pontos é preservada no banco para permitir a reconstrução correta da geometria no frontend.
+
+## Regras implementadas
+
+Entre as regras tratadas pelo backend:
+
+* origem e destino de uma relação precisam existir;
+* um local não pode se relacionar consigo mesmo;
+* relações duplicadas são rejeitadas;
+* um local relacionado não pode ser excluído enquanto possuir relações vinculadas;
+* zonas precisam possuir coordenadas suficientes para formar um polígono válido;
+* erros de validação, recursos inexistentes e conflitos possuem respostas HTTP específicas.
+
+## API
+
+Principais recursos:
+
+```http
+GET    /locais
+POST   /locais
+PATCH  /locais/{id}
+DELETE /locais/{id}
+
+GET    /relacoes
+POST   /relacoes
+PATCH  /relacoes/{id}
+DELETE /relacoes/{id}
+
+GET    /zonas
+POST   /zonas
+PATCH  /zonas/{id}
+DELETE /zonas/{id}
+```
+
+Com o backend executando, a documentação interativa está disponível em:
 
 ```text
-src/
-├── app/
-├── components/
-│   └── ui/
-└── features/
-    └── mapa/
-        ├── components/
-        └── types.ts
+http://localhost:8080/swagger-ui.html
 ```
 
-A organização evolui conforme novas responsabilidades aparecem, evitando abstrações desnecessárias no início do desenvolvimento.
+## Executando
 
-## Executando o projeto
+### Requisitos
+
+* Java
+* PostgreSQL
+* Node.js
+* npm
+
+### Backend
+
+Configure as variáveis do banco:
+
+```env
+DB_URL=jdbc:postgresql://localhost:5432/geo_relations_lab
+DB_USERNAME=postgres
+DB_PASSWORD=sua_senha
+```
+
+Execute:
 
 ```bash
-git clone <url-do-repositorio>
-cd geo-relations-lab
+cd backend
+./mvnw spring-boot:run
+```
 
+Backend:
+
+```text
+http://localhost:8080
+```
+
+### Frontend
+
+Configure:
+
+```env
+NEXT_PUBLIC_API_URL=http://localhost:8080
+```
+
+Execute:
+
+```bash
+cd frontend
 npm install
 npm run dev
 ```
 
-A aplicação estará disponível no endereço informado pelo Next.js no terminal.
+Frontend:
 
-## Status
+```text
+http://localhost:3000
+```
 
-🚧 **Em desenvolvimento**
+## O que este projeto demonstra
 
-O projeto é utilizado como laboratório prático para aprofundar conhecimentos em desenvolvimento frontend, TypeScript, visualização geoespacial e representação de dados relacionados.
+O Geo Relations Lab foi desenvolvido também como exercício prático de **Engenharia de Software e desenvolvimento Full Stack**, explorando:
+
+* construção e consumo de APIs REST;
+* integração frontend/backend;
+* modelagem relacional;
+* JPA e relacionamentos entre entidades;
+* DTOs e separação entre API e persistência;
+* validação em diferentes camadas;
+* integridade referencial;
+* transações e lazy loading;
+* tratamento global de exceções com `ProblemDetail`;
+* visualização e manipulação de dados geográficos;
+* decisões arquiteturais evitando acoplamento entre domínio e interface;
+* desenvolvimento incremental e organização em camadas.
 
 ## Autor
 
 **Wendel Rodrigues**
+Estudante de Engenharia de Software na Universidade Federal do Ceará (UFC) e Desenvolvedor Full Stack, com interesse principalmente em **Back-End, Java/Spring Boot, APIs, Engenharia de Software e aplicações web**.
 
-Estudante de Engenharia de Software e desenvolvedor interessado em desenvolvimento Full Stack, APIs, arquitetura de software e aplicações web.
+[LinkedIn](https://linkedin.com/in/wendelrodriguesz) · [GitHub](https://github.com/WendelRodriguesz)

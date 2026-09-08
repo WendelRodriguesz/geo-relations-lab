@@ -28,7 +28,7 @@ public class RelacaoController {
     }
 
     @PatchMapping("/{id}")
-    public RelacaoResponse atualizarRelacao(@PathVariable UUID id, @Valid @RequestBody RelacaoUpdateRequest request) {
+    public RelacaoResponse atualizarRelacao(@PathVariable UUID id, @RequestBody RelacaoUpdateRequest request) {
         return relacaoService.atualizarRelacao(id, request);
     }
 

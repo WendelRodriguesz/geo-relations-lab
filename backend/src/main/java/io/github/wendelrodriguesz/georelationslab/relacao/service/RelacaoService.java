@@ -77,7 +77,7 @@ public class RelacaoService {
 
         LocaisRelacao locais = buscarEValidarLocais(request.origemId(), request.destinoId());
 
-        if (relacaoRepository.existsByOrigem_IdAndDestino_Id(request.origemId(), request.destinoId())) {
+        if (relacaoRepository.existsByOrigem_IdAndDestino_Id(locais.origem.getId(), locais.destino.getId())) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Já existe uma relação entre esses locais");
         }
 
@@ -90,10 +90,8 @@ public class RelacaoService {
 
     @Transactional
     public RelacaoResponse atualizarRelacao(UUID id, RelacaoUpdateRequest request) {
-
         Relacao relacao = relacaoRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Relação não encontrada"));
-
-        LocaisRelacao locais = buscarEValidarLocais(request.origemId(), request.destinoId());
+        LocaisRelacao locais = buscarEValidarLocais(request.origemId() != null ? request.origemId() : relacao.getOrigem().getId(), request.destinoId() != null ? request.destinoId() : relacao.getDestino().getId());
 
         if (relacaoRepository.existsByOrigem_IdAndDestino_IdAndIdNot(request.origemId(), request.destinoId(), id)) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Já existe uma relação entre esses locais");

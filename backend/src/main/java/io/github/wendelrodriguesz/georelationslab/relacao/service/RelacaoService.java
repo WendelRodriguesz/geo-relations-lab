@@ -94,7 +94,8 @@ public class RelacaoService {
         Relacao relacao = relacaoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException( "Relação não encontrada"));
         LocaisRelacao locais = buscarEValidarLocais(request.origemId() != null ? request.origemId() : relacao.getOrigem().getId(), request.destinoId() != null ? request.destinoId() : relacao.getDestino().getId());
 
-        if (relacaoRepository.existsByOrigem_IdAndDestino_IdAndIdNot(request.origemId(), request.destinoId(), id)) {
+        if (relacaoRepository.existsByOrigem_IdAndDestino_IdAndIdNot(locais.origem().getId(),
+                locais.destino().getId(), id)) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Já existe uma relação entre esses locais");
         }
 

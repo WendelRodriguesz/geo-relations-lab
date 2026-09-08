@@ -1,5 +1,6 @@
 package io.github.wendelrodriguesz.georelationslab.relacao.service;
 
+import io.github.wendelrodriguesz.georelationslab.exception.BusinessConflictException;
 import io.github.wendelrodriguesz.georelationslab.exception.ResourceNotFoundException;
 import io.github.wendelrodriguesz.georelationslab.local.model.Local;
 import io.github.wendelrodriguesz.georelationslab.local.repository.LocalRepository;
@@ -9,10 +10,8 @@ import io.github.wendelrodriguesz.georelationslab.relacao.dto.RelacaoUpdateReque
 import io.github.wendelrodriguesz.georelationslab.relacao.model.Relacao;
 import io.github.wendelrodriguesz.georelationslab.relacao.repository.RelacaoRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.awt.*;
 import java.util.List;
@@ -37,7 +36,7 @@ public class RelacaoService {
 
     private LocaisRelacao buscarEValidarLocais(UUID origemId, UUID destinoId) {
         if (origemId.equals(destinoId)) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Origem e destino não podem ser iguais");
+            throw new BusinessConflictException( "Origem e destino não podem ser iguais");
         }
 
         Local origem = buscarLocal(origemId, "Local de origem não encontrado");
@@ -96,7 +95,7 @@ public class RelacaoService {
 
         if (relacaoRepository.existsByOrigem_IdAndDestino_IdAndIdNot(locais.origem().getId(),
                 locais.destino().getId(), id)) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Já existe uma relação entre esses locais");
+            throw new BusinessConflictException( "Já existe uma relação entre esses locais");
         }
 
         relacao.atualizar(request.nome(), request.descricao(), request.tipo(), request.cor(), locais.origem(), locais.destino());

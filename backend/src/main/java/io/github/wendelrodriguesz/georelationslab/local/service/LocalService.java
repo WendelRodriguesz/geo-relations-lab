@@ -1,5 +1,6 @@
 package io.github.wendelrodriguesz.georelationslab.local.service;
 
+import io.github.wendelrodriguesz.georelationslab.exception.BusinessConflictException;
 import io.github.wendelrodriguesz.georelationslab.exception.ResourceNotFoundException;
 import io.github.wendelrodriguesz.georelationslab.local.dto.LocalCreateRequest;
 import io.github.wendelrodriguesz.georelationslab.local.dto.LocalResponse;
@@ -8,10 +9,8 @@ import io.github.wendelrodriguesz.georelationslab.local.model.Local;
 import io.github.wendelrodriguesz.georelationslab.local.repository.LocalRepository;
 import io.github.wendelrodriguesz.georelationslab.relacao.repository.RelacaoRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.UUID;
@@ -100,8 +99,7 @@ public class LocalService {
                 relacaoRepository.existsByOrigem_IdOrDestino_Id(id, id);
 
         if (possuiRelacoes) {
-            throw new ResponseStatusException(
-                    HttpStatus.CONFLICT,
+            throw new BusinessConflictException(
                     "Não é possível excluir o local porque existem relações vinculadas a ele"
             );
         }

@@ -21,4 +21,20 @@ public class GlobalExceptionHandler {
 
         return problem;
     }
+
+    @ExceptionHandler(BusinessConflictException.class)
+    public ProblemDetail handleBusinessConflict(
+            BusinessConflictException exception
+    ) {
+        ProblemDetail problem = ProblemDetail.forStatusAndDetail(
+                HttpStatus.CONFLICT,
+                exception.getMessage()
+        );
+
+        problem.setTitle("Conflito de regra de negócio");
+
+        return problem;
+    }
+
+
 }

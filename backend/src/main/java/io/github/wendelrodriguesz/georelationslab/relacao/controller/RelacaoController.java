@@ -6,6 +6,7 @@ import io.github.wendelrodriguesz.georelationslab.relacao.dto.RelacaoUpdateReque
 import io.github.wendelrodriguesz.georelationslab.relacao.service.RelacaoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,6 +23,7 @@ public class RelacaoController {
         return relacaoService.listarRelacoes();
     }
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping()
     public RelacaoResponse criarRelacao(@Valid @RequestBody RelacaoCreateRequest request) {
         return relacaoService.criarRelacao(request);
@@ -32,6 +34,7 @@ public class RelacaoController {
         return relacaoService.atualizarRelacao(id, request);
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
     public void deletarRelacao(@PathVariable UUID id) {
         relacaoService.deletarRelacao(id);

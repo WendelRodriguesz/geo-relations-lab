@@ -6,6 +6,7 @@ import io.github.wendelrodriguesz.georelationslab.local.dto.LocalUpdateRequest;
 import io.github.wendelrodriguesz.georelationslab.local.service.LocalService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +24,7 @@ public class LocalController {
         return localService.verLocais();
     }
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public LocalResponse criarLocal(@Valid @RequestBody LocalCreateRequest request){
         return localService.criar(request);
@@ -38,6 +40,7 @@ public class LocalController {
         return localService.atualizar(id, request);
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarLocal(@PathVariable UUID id) {
         localService.deletar(id);

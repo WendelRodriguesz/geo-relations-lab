@@ -31,9 +31,8 @@ public class Relacao {
 
     private String descricao;
 
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private TipoRelacao tipo = TipoRelacao.NAO_INFORMADO;
+    private String tipo = "NAO_INFORMADO";
 
     @Column(nullable = false)
     private String cor = "#2563eb";
@@ -46,16 +45,16 @@ public class Relacao {
     @JoinColumn(name = "destino_id", nullable = false)
     private Local destino;
 
-    public Relacao(String nome, String descricao, TipoRelacao tipo, String cor, Local origem, Local destino) {
+    public Relacao(String nome, String descricao, String tipo, String cor, Local origem, Local destino) {
         this.nome = nome;
         this.descricao = descricao;
-        this.tipo = tipo != null ? tipo : TipoRelacao.NAO_INFORMADO;
+        this.tipo = tipo != null ? tipo : "NAO_INFORMADO";
         this.cor = cor != null ? cor : "#2563eb";
         this.origem = origem;
         this.destino = destino;
     }
 
-    public void atualizar(String nome, String descricao, TipoRelacao tipo, String cor, Local origem, Local destino) {
+    public void atualizar(String nome, String descricao, String tipo, String cor, Local origem, Local destino) {
         this.nome = nome != null ? nome : this.nome;
         this.descricao = descricao != null ? descricao : this.descricao;
         this.tipo = tipo != null ? tipo : this.tipo;

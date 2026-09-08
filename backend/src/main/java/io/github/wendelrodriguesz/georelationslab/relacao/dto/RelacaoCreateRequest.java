@@ -1,6 +1,5 @@
 package io.github.wendelrodriguesz.georelationslab.relacao.dto;
 
-import io.github.wendelrodriguesz.georelationslab.relacao.model.TipoRelacao;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -11,7 +10,7 @@ public record RelacaoCreateRequest(
         String nome,
 
         String descricao,
-        TipoRelacao tipo,
+        String tipo,
         String cor,
 
         @NotNull(message = "O ID de origem é obrigatório")

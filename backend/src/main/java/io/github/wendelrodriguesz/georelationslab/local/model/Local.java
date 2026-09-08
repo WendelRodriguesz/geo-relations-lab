@@ -21,9 +21,8 @@ public class Local {
 
    private String descricao;
 
-    @Enumerated(EnumType.STRING) // Deixa "nao informado" inves de "0"
     @Column(nullable = false)
-   private TipoLocal tipo = TipoLocal.NAO_INFORMADO;
+   private String tipo = "NAO_INFORMADO";
 
     @Column(nullable = false)
    private Double longitude;
@@ -31,10 +30,10 @@ public class Local {
     @Column(nullable = false)
    private Double latitude;
 
-    public Local(String nome, String descricao, TipoLocal tipo, Double longitude, Double latitude) {
+    public Local(String nome, String descricao, String tipo, Double longitude, Double latitude) {
         this.nome = nome;
         this.descricao = descricao;
-        this.tipo = tipo != null ? tipo : TipoLocal.NAO_INFORMADO;
+        this.tipo = tipo != null ? tipo : "NAO_INFORMADO";
         this.longitude = longitude;
         this.latitude = latitude;
     }
@@ -42,7 +41,7 @@ public class Local {
     public void atualizar(
             String nome,
             String descricao,
-            TipoLocal tipo,
+            String tipo,
             Double longitude,
             Double latitude
     ) {

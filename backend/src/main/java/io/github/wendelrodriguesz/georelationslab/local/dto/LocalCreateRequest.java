@@ -1,6 +1,5 @@
 package io.github.wendelrodriguesz.georelationslab.local.dto;
 
-import io.github.wendelrodriguesz.georelationslab.local.model.TipoLocal;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -10,7 +9,7 @@ public record LocalCreateRequest(
 
     String descricao,
 
-    TipoLocal tipo,
+    String tipo,
 
     @NotNull(message = "A longitude do local não pode ser nula")
     Double longitude,

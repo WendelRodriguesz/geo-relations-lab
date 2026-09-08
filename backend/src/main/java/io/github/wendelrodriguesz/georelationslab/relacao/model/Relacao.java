@@ -11,10 +11,10 @@ import java.util.UUID;
 
 @Entity
 @Table(
-        name = "relations",
+        name = "relacoes",
         uniqueConstraints = {
                 @UniqueConstraint( // Só exite uma relação entre dois locais, na mesma direção (atualmente) A,B != B,A
-                        name = "uk_relations_origem_destino",
+                        name = "uk_relacoes_origem_destino",
                         columnNames = {"origem_id", "destino_id"}
                 )
         }

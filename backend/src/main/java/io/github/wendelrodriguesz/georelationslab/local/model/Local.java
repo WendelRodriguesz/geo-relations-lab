@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import java.util.UUID;
 
 @Entity // Registra como tipo persistente JPA
-@Table(name = "locations") // Definide o nome da tabela do DB
+@Table(name = "locais") // Definide o nome da tabela do DB
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Local {

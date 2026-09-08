@@ -1,57 +1,74 @@
-import type { Local, Relacao, Zona } from "../mapa/types";
+import type {
+  Local,
+  Relacao,
+  Zona,
+  NovoLocal,
+  NovaRelacao,
+  NovaZona,
+} from "./types";
 
-const API_URL = "http://localhost:3001";
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8080";
 
-export async function listarLocais() {
-  const response = await fetch(`${API_URL}/locais`);
+type ApiProblem = {
+  title?: string;
+  detail?: string;
+  status?: number;
+};
 
-  return response.json() as Promise<Local[]>;
+async function apiFetch<T>(path: string, options?: RequestInit): Promise<T> {
+  const response = await fetch(`${API_URL}${path}`, options);
+
+  if (!response.ok) {
+    const problem = (await response
+      .json()
+      .catch(() => null)) as ApiProblem | null;
+
+    throw new Error(
+      problem?.detail ?? `Erro ao acessar a API (${response.status})`,
+    );
+  }
+
+  return response.json() as Promise<T>;
 }
 
-export async function criarLocal(local: Local) {
-  const response = await fetch(`${API_URL}/locais`, {
+export function listarLocais() {
+  return apiFetch<Local[]>("/locais");
+}
+
+export function criarLocal(local: NovoLocal) {
+  return apiFetch<Local>("/locais", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(local),
   });
-
-  return response.json() as Promise<Local>;
 }
 
-export async function listarRelacoes() {
-  const response = await fetch(`${API_URL}/relacoes`);
-
-  return response.json() as Promise<Relacao[]>;
+export function listarRelacoes() {
+  return apiFetch<Relacao[]>("/relacoes");
 }
 
-export async function criarRelacao(relacao: Relacao) {
-  const response = await fetch(`${API_URL}/relacoes`, {
+export function criarRelacao(relacao: NovaRelacao) {
+  return apiFetch<Relacao>("/relacoes", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(relacao),
   });
-
-  return response.json() as Promise<Relacao>;
 }
 
-export async function listarZonas() {
-  const response = await fetch(`${API_URL}/zonas`);
-
-  return response.json() as Promise<Zona[]>;
+export function listarZonas() {
+  return apiFetch<Zona[]>("/zonas");
 }
 
-export async function criarZona(zona: Zona) {
-  const response = await fetch(`${API_URL}/zonas`, {
+export function criarZona(zona: NovaZona) {
+  return apiFetch<Zona>("/zonas", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(zona),
   });
-
-  return response.json() as Promise<Zona>;
 }

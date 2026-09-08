@@ -4,6 +4,7 @@ import io.github.wendelrodriguesz.georelationslab.relacao.dto.RelacaoCreateReque
 import io.github.wendelrodriguesz.georelationslab.relacao.dto.RelacaoResponse;
 import io.github.wendelrodriguesz.georelationslab.relacao.dto.RelacaoUpdateRequest;
 import io.github.wendelrodriguesz.georelationslab.relacao.service.RelacaoService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
+@Tag(
+        name = "Locais",
+        description = "Operações de cadastro e gerenciamento de locais"
+)
 @RestController
 @RequestMapping("/relacoes")
 @RequiredArgsConstructor

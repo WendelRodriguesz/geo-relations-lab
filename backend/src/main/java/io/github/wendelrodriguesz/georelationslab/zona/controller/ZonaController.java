@@ -4,6 +4,7 @@ import io.github.wendelrodriguesz.georelationslab.zona.dto.ZonaCreateRequest;
 import io.github.wendelrodriguesz.georelationslab.zona.dto.ZonaResponse;
 import io.github.wendelrodriguesz.georelationslab.zona.dto.ZonaUpdateRequest;
 import io.github.wendelrodriguesz.georelationslab.zona.service.ZonaService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
+@Tag(
+        name = "Zonas",
+        description = "Operações de gerenciamento de zonas geográficas"
+)
 @RestController
 @RequestMapping("/zonas")
 @RequiredArgsConstructor

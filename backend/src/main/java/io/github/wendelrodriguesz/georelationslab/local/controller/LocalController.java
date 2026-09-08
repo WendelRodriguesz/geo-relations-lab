@@ -4,6 +4,7 @@ import io.github.wendelrodriguesz.georelationslab.local.dto.LocalCreateRequest;
 import io.github.wendelrodriguesz.georelationslab.local.dto.LocalResponse;
 import io.github.wendelrodriguesz.georelationslab.local.dto.LocalUpdateRequest;
 import io.github.wendelrodriguesz.georelationslab.local.service.LocalService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
+@Tag(
+        name = "Locais",
+        description = "Operações de cadastro e gerenciamento de locais"
+)
 @RestController
 @RequestMapping("/locais")
 @RequiredArgsConstructor // O Lombok cria o construtor automaticamente

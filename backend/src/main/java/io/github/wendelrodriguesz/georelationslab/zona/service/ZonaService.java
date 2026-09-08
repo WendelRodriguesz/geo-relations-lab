@@ -1,5 +1,6 @@
 package io.github.wendelrodriguesz.georelationslab.zona.service;
 
+import io.github.wendelrodriguesz.georelationslab.exception.ResourceNotFoundException;
 import io.github.wendelrodriguesz.georelationslab.zona.dto.CoordenadaResponse;
 import io.github.wendelrodriguesz.georelationslab.zona.dto.ZonaCreateRequest;
 import io.github.wendelrodriguesz.georelationslab.zona.dto.ZonaResponse;
@@ -49,13 +50,17 @@ public class ZonaService {
 
     @Transactional(readOnly = true)
     public ZonaResponse verZonaPorId(UUID id) {
-        Zona zona = zonaRepository.findById(id).orElseThrow(() -> new RuntimeException("Zona não encontrada"));
+        Zona zona = zonaRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(
+                        "Zona não encontrada"
+                ));
         return toResponse(zona);
     }
 
     @Transactional
     public ZonaResponse atualizarZona(UUID id, ZonaUpdateRequest request) {
-        Zona zona = zonaRepository.findById(id).orElseThrow(() -> new RuntimeException("Zona não encontrada"));
+        Zona zona = zonaRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(
+                        "Zona não encontrada"
+                ));
         zona.atualizar(request.nome(), request.cor(), request.coordenadas());
         Zona updatedZona = zonaRepository.save(zona);
         return toResponse(updatedZona);
@@ -63,7 +68,9 @@ public class ZonaService {
 
     @Transactional
     public void deletarZona(UUID id) {
-        Zona zona = zonaRepository.findById(id).orElseThrow(() -> new RuntimeException("Zona não encontrada"));
+        Zona zona = zonaRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(
+                        "Zona não encontrada"
+                ));
         zonaRepository.delete(zona);
     }
 }

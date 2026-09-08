@@ -1,5 +1,6 @@
 package io.github.wendelrodriguesz.georelationslab.relacao.service;
 
+import io.github.wendelrodriguesz.georelationslab.exception.ResourceNotFoundException;
 import io.github.wendelrodriguesz.georelationslab.local.model.Local;
 import io.github.wendelrodriguesz.georelationslab.local.repository.LocalRepository;
 import io.github.wendelrodriguesz.georelationslab.relacao.dto.RelacaoCreateRequest;
@@ -28,7 +29,7 @@ public class RelacaoService {
     }
 
     private Local buscarLocal(UUID id, String mensagem) {
-        return localRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, mensagem));
+        return localRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException( mensagem));
     }
 
     private record LocaisRelacao(Local origem, Local destino) {
@@ -53,7 +54,7 @@ public class RelacaoService {
 
     @Transactional(readOnly = true)
     public RelacaoResponse verRelacaoPorId(UUID id) {
-        Relacao relacao = relacaoRepository.findById(id).orElseThrow(() -> new RuntimeException("Relação não encontrada"));
+        Relacao relacao = relacaoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Relação não encontrada"));
         return toResponse(relacao);
     }
 
@@ -78,7 +79,7 @@ public class RelacaoService {
         LocaisRelacao locais = buscarEValidarLocais(request.origemId(), request.destinoId());
 
         if (relacaoRepository.existsByOrigem_IdAndDestino_Id(locais.origem.getId(), locais.destino.getId())) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Já existe uma relação entre esses locais");
+            throw new ResourceNotFoundException( "Já existe uma relação entre esses locais");
         }
 
         Relacao relacao = new Relacao(request.nome(), request.descricao(), request.tipo(), request.cor(), locais.origem(), locais.destino());
@@ -90,7 +91,7 @@ public class RelacaoService {
 
     @Transactional
     public RelacaoResponse atualizarRelacao(UUID id, RelacaoUpdateRequest request) {
-        Relacao relacao = relacaoRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Relação não encontrada"));
+        Relacao relacao = relacaoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException( "Relação não encontrada"));
         LocaisRelacao locais = buscarEValidarLocais(request.origemId() != null ? request.origemId() : relacao.getOrigem().getId(), request.destinoId() != null ? request.destinoId() : relacao.getDestino().getId());
 
         if (relacaoRepository.existsByOrigem_IdAndDestino_IdAndIdNot(request.origemId(), request.destinoId(), id)) {
@@ -104,7 +105,7 @@ public class RelacaoService {
 
     @Transactional
     public void deletarRelacao(UUID id) {
-        Relacao relacao = relacaoRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Relação não encontrada"));
+        Relacao relacao = relacaoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException( "Relação não encontrada"));
         relacaoRepository.delete(relacao);
     }
 }

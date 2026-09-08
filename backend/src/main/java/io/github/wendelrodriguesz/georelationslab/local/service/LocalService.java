@@ -1,5 +1,6 @@
 package io.github.wendelrodriguesz.georelationslab.local.service;
 
+import io.github.wendelrodriguesz.georelationslab.exception.ResourceNotFoundException;
 import io.github.wendelrodriguesz.georelationslab.local.dto.LocalCreateRequest;
 import io.github.wendelrodriguesz.georelationslab.local.dto.LocalResponse;
 import io.github.wendelrodriguesz.georelationslab.local.dto.LocalUpdateRequest;
@@ -58,21 +59,19 @@ public class LocalService {
     @Transactional(readOnly = true)
     public LocalResponse verLocalPorId(UUID id){
         Local local = localRepository.findById(id)
-            .orElseThrow(() -> new ResponseStatusException(
-                    HttpStatus.NOT_FOUND,
-                    "Local não encontrado"
-            ));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Local não encontrado"
+                ));
         return toResponse(local);
     }
 
     @Transactional()
     public LocalResponse atualizar(UUID id, LocalUpdateRequest request){
         Local localAntigo = localRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(
-                                HttpStatus.NOT_FOUND,
-                                "Local não encontrado"
-                        )
-                );
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Local não encontrado"
+                ));
+
         // Atualize os dados do objeto existente
         localAntigo.atualizar(
                 request.nome(),
@@ -91,8 +90,7 @@ public class LocalService {
     @Transactional()
     public void deletar(UUID id) {
         Local local = localRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,
+                .orElseThrow(() -> new ResourceNotFoundException(
                         "Local não encontrado"
                 ));
 

@@ -118,7 +118,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ProblemDetail handleUnexpectedException(
             Exception exception
     ) {
-        log.error("Erro inesperado na aplicação", exception);
+        logger.error("Erro inesperado na aplicação", exception);
 
         ProblemDetail problem = ProblemDetail.forStatusAndDetail(
                 HttpStatus.INTERNAL_SERVER_ERROR,

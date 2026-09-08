@@ -34,6 +34,9 @@ import type {
   DadosRelacao,
   DadosZona,
   Local,
+  NovoLocal,
+  NovaRelacao,
+  NovaZona,
   Relacao,
   Zona,
 } from "../types";
@@ -626,8 +629,7 @@ export default function Mapa() {
       return;
     }
 
-    const novoLocal: Local = {
-      id: crypto.randomUUID(),
+    const novoLocal: NovoLocal = {
       nome: dados.nome,
       descricao: dados.descricao,
       tipo: dados.tipo,
@@ -664,8 +666,7 @@ export default function Mapa() {
       return;
     }
 
-    const novaRelacao: Relacao = {
-      id: crypto.randomUUID(),
+    const novaRelacao: NovaRelacao = {
       nome: dados.nome,
       descricao: dados.descricao,
       tipo: dados.tipo,
@@ -721,8 +722,7 @@ export default function Mapa() {
       return;
     }
 
-    const novaZona: Zona = {
-      id: crypto.randomUUID(),
+    const novaZona: NovaZona = {
       nome: dados.nome,
       cor: dados.cor,
       coordenadas: coordenadasZona,

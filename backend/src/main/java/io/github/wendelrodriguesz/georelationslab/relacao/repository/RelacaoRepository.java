@@ -16,4 +16,6 @@ public interface RelacaoRepository extends JpaRepository<Relacao, UUID> {
     boolean existsByOrigem_IdAndDestino_Id(UUID origemId, UUID destinoId); // ver se existe uma relação duplicada
 
     boolean existsByOrigem_IdAndDestino_IdAndIdNot(UUID origemId, UUID destinoId, UUID id);
+
+    boolean existsByOrigem_IdOrDestino_Id(UUID origemId, UUID destinoId);
 }

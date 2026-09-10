@@ -77,7 +77,7 @@ export function Grafo({ locais, relacoes, onFechar }: GrafoProps) {
 
     const nodesGeograficos = locais.map((local) => ({
       id: local.id,
-      type: "local",
+      // type: "local",
       position: {
         x: (local.longitude - longitudeMinima) * ESCALA_GRAFO,
         y: (latitudeMaxima - local.latitude) * ESCALA_GRAFO,

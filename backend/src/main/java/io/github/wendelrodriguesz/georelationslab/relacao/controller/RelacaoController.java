@@ -4,6 +4,9 @@ import io.github.wendelrodriguesz.georelationslab.relacao.dto.RelacaoCreateReque
 import io.github.wendelrodriguesz.georelationslab.relacao.dto.RelacaoResponse;
 import io.github.wendelrodriguesz.georelationslab.relacao.dto.RelacaoUpdateRequest;
 import io.github.wendelrodriguesz.georelationslab.relacao.service.RelacaoService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -14,8 +17,8 @@ import java.util.List;
 import java.util.UUID;
 
 @Tag(
-        name = "Locais",
-        description = "Operações de cadastro e gerenciamento de locais"
+        name = "Relações",
+        description = "Gerenciamento das relações entre locais cadastrados."
 )
 @RestController
 @RequestMapping("/relacoes")
@@ -28,6 +31,27 @@ public class RelacaoController {
         return relacaoService.listarRelacoes();
     }
 
+    @Operation(
+            summary = "Cria uma relação entre dois locais"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "Relação criada com sucesso"
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Dados da requisição inválidos"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Local de origem ou destino não encontrado"
+            ),
+            @ApiResponse(
+                    responseCode = "409",
+                    description = "Origem e destino são iguais ou a relação já existe"
+            )
+    })
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping()
     public RelacaoResponse criarRelacao(@Valid @RequestBody RelacaoCreateRequest request) {
